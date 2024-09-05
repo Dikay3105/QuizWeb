@@ -1,0 +1,135 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.navbar-nav .nav-link.active {
+  color: #00bfff !important;
+}
+
+.videoHome {
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+}
+
+.loader-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  /* Để đảm bảo nó nằm trên các phần tử khác */
+}
+
+.app-container {
+  &.loading {
+    opacity: 0.5;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .header-container {
+    .navbar {
+      z-index: 10;
+      background-color: rgba(0, 0, 0, 0) !important;
+      padding-top: 20px;
+    }
+
+    .btn-login {
+      border-radius: 5px;
+      margin-right: 15px;
+      padding: 0 15px;
+      border: 1px solid #535353;
+    }
+
+    .btn-signup {
+      border-radius: 5px;
+      margin-right: 15px;
+      padding: 0 15px;
+      border: 1px solid #535353;
+      background: rgb(110, 110, 110);
+      color: white;
+    }
+
+    .btn-login,
+    .btn-signup {
+      height: 40px;
+
+      &:hover {
+        opacity: .7;
+      }
+    }
+  }
+
+  .home-content {
+    z-index: 10;
+    position: relative;
+    padding: 100px;
+    margin-top: 100px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    .main-title {
+      font-size: 35px;
+      font-weight: 600ngu;
+    }
+
+    .sub-title {
+      font-size: 25px;
+    }
+  }
+}
