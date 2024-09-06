@@ -2,14 +2,17 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import videoHomepage from '../../assets/video-homepage.mp4';
+import { useSelector } from 'react-redux';
 
 
 
 const Home = () => {
-
+    const navigate = useNavigate();
+    const isAuthenticated = useSelector(state => state.userReducer.isAuthenticated);
+    const account = useSelector(state => state.userReducer.account);
     return (
         <>
             <video className='videoHome' autoPlay loop muted>
@@ -24,7 +27,13 @@ const Home = () => {
                     Create a typeform instead and make everyone happy.
                 </div>
                 <div>
-                    <button>Get's started. It's free.</button>
+                    {isAuthenticated === false ?
+
+                        <button onClick={() => { navigate('/register') }}>Get's started. It's free.</button>
+                        :
+                        <button onClick={() => { navigate('/user') }}>Doing quiz now!!!!</button>
+
+                    }
                 </div>
             </div>
         </>

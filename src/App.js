@@ -10,9 +10,10 @@ import Dashboard from './components/Admin/Content/Dashboard';
 import Login from './components/Auth/Login/Login';
 import { ToastContainer } from 'react-toastify';
 import Register from './components/Auth/Register/Register';
-import { useState } from "react";
 import { PacmanLoader } from 'react-spinners';
 import { useSelector } from 'react-redux';
+import ListQuiz from './components/User/ListQuiz';
+import DetailQuiz from './components/User/DetailQuiz';
 
 // CSS override cho loader (nếu cần)
 const override = {
@@ -21,13 +22,19 @@ const override = {
   borderColor: "red",
 };
 
+const NotFound = () => {
+  return (<div className='container mt-3 alert alert-danger'>not found data</div>)
+}
+
 const App = () => {
   const location = useLocation();
-  const showHeader = !location.pathname.includes('/admin') && !location.pathname.includes('/login') && !location.pathname.includes('/register');
-  let [loading, setLoading] = useState(false);
-  let [color, setColor] = useState("#36d7b7");
+  const showHeader = !location.pathname.includes('/admin') && !location.pathname.includes('/login') && !location.pathname.includes('/register') && !location.pathname.includes('/quiz/');
+
+  // Sử dụng loading từ Redux
+  const loading = useSelector(state => state.loadingReducer.loading);
   const isAuthenticated = useSelector(state => state.userReducer.isAuthenticated);
   const account = useSelector(state => state.userReducer.account);
+  const color = "#36d7b7"; // màu sắc loader
 
   return (
     <>
@@ -35,16 +42,17 @@ const App = () => {
         {showHeader && <Header isAuthenticated={isAuthenticated} account={account} />}
         <Routes>
           <Route index element={<Home />} />
-          <Route path="/user" element={<User />} />
+          <Route path="/user" element={<ListQuiz />} />
+          <Route path="/quiz/:id" element={<DetailQuiz />} />
           <Route path="admin" element={<Admin />}>
             <Route index element={<Dashboard />} />
             <Route path="manage-user" element={<ManageUser />} />
           </Route>
-          <Route path='/login' element={<Login setLoading={setLoading} />} />
+          <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </div>
-
 
       <ToastContainer
         position="top-center"

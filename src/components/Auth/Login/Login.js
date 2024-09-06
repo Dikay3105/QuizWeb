@@ -41,7 +41,6 @@ const Login = (props) => {
             toast.error("Password may not be blank");
             return;
         }
-        props.setLoading(true);
         let response = await postLogin(email, password);
         if (response && response.EC === 0) {
             dispatch(doLogIn(response));
@@ -52,7 +51,6 @@ const Login = (props) => {
         } else if (response && response.EC !== 0) {
             toast.error(response.EM);
         }
-        props.setLoading(false);
     };
 
     return (

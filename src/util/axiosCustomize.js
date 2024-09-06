@@ -1,28 +1,37 @@
 import axios from "axios";
+import { store } from "../redux/store";
+import { setLoading } from "../redux/action/loadingAction"; // Import action để set loading
 
 const instance = axios.create({
     baseURL: 'http://localhost:8081/',
-    // timeout: 1000,
-    // headers: { 'X-Custom-Header': 'foobar' }
 });
 
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {
-    // Do something before request is sent
+    // Dispatch action để bật loading trước khi request
+    store.dispatch(setLoading(true));
+
+    // Thêm access_token vào headers nếu có
+    const access_token = store.getState()?.userReducer?.account?.access_token;
+    if (access_token) {
+        config.headers["Authorization"] = "Bearer " + access_token;
+    }
+
     return config;
 }, function (error) {
-    // Do something with request error
+    // Nếu có lỗi, tắt loading
+    store.dispatch(setLoading(false));
     return Promise.reject(error);
 });
 
 // Add a response interceptor
 instance.interceptors.response.use(function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
+    // Tắt loading sau khi nhận được response
+    store.dispatch(setLoading(false));
     return response && response.data ? response.data : response;
 }, function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
+    // Tắt loading nếu có lỗi xảy ra
+    store.dispatch(setLoading(false));
     return error && error.response && error.response.data ? error.response.data : Promise.reject(error);
 });
 
