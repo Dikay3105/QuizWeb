@@ -19,25 +19,32 @@ const ListQuiz = () => {
 
     return (
         <div className="List-Quiz-Container d-flex gap-5">
-            {arrQuiz && arrQuiz.length > 0 &&
+            {arrQuiz && arrQuiz.length > 0 ? (
                 arrQuiz.map((quiz, index) => (
                     <div key={`${index}-quiz`} className="card" style={{ width: "18rem" }}>
-                        <img className="card-img-top" src={`data:image/jpeg;base64,${quiz.image}`} alt="Card image cap" />
+                        <img
+                            className="card-img-top"
+                            src={`data:image/jpeg;base64,${quiz.image}`}
+                            alt={`${quiz.title} thumbnail`}
+                        />
                         <div className="card-body">
                             <h5 className="card-title">{quiz.title}</h5>
                             <p className="card-text">{quiz.description}</p>
-                            <button onClick={() => { navigate(`/quiz/:${quiz.id}`) }} className="btn btn-primary">
+                            <button
+                                onClick={() => navigate(`/quiz/${quiz.id}`, { state: { quizTitle: quiz.description } })}
+                                className="btn btn-primary"
+                            >
                                 Start now
                             </button>
+
                         </div>
                     </div>
                 ))
-            }
-
-            {arrQuiz && arrQuiz.length === 0 &&
-                <div> You don't have any quiz now</div>
-            }
+            ) : (
+                <div>You don't have any quiz now</div>
+            )}
         </div>
+
     );
 }
 

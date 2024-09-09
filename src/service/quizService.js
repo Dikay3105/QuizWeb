@@ -24,13 +24,13 @@ const delUser = (id) => {
 }
 
 const getQuizByUser = () => {
-    return axios.get(`/api/v1/quiz-by-participant`);
+    return axios.get(`api/v1/quiz-by-participant`);
 }
 
-const getQuizByID = (quizId) => {
-    return axios.get(`api/v1/question-by-quiz?quizId=${quizId}`);
+const getDataQuiz = (quizId) => {
+    return axios.get(`api/v1/questions-by-quiz?quizId=${quizId}`);
 }
 
 export {
-    getQuizByUser, getQuizByID
+    getQuizByUser, getDataQuiz
 };

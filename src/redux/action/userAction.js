@@ -1,6 +1,5 @@
 export const FETCH_USER_LOGIN_SUCCESS = 'FETCH_USER_LOGIN_SUCCESS';
-
-export const DECREMENT = 'DECREMENT';
+export const LOGOUT = 'LOGOUT';
 
 export const doLogIn = (data) => {
     return {
@@ -9,8 +8,8 @@ export const doLogIn = (data) => {
     };
 };
 
-export const decreaseCounter = () => {
+export const doLogOut = () => {
     return {
-        type: DECREMENT,
+        type: LOGOUT,
     };
 };

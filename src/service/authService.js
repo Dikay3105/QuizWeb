@@ -1,7 +1,11 @@
 import axios from "../util/axiosCustomize";
 
 const postLogin = (email, password) => {
-    return axios.post('api/v1/login', { email, password, delay: 5000 });
+    return axios.post('api/v1/login', { email, password, delay: 3000 });
+}
+
+const postLogOut = (email, refresh_token) => {
+    return axios.post('api/v1/logout', { email, refresh_token, delay: 1000 });
 }
 
 const postRegister = (email, username, password) => {
@@ -12,19 +16,8 @@ const postRegister = (email, username, password) => {
     return axios.post('api/v1/register', form);
 }
 
-const delUser = (id) => {
-    return axios.delete('api/v1/participant', { data: { id: id } });
-}
-
-const getListUserPaginate = (page, limit) => {
-    return axios.get(`api/v1/participant?page=${page}&limit=${limit}`);
-}
-
-const getListUser = () => {
-    return axios.get('api/v1/participant/all');
-}
-
 export {
     postLogin,
     postRegister,
+    postLogOut
 };

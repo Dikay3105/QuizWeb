@@ -1,0 +1,96 @@
+.detail-quiz-container {
+    display: flex;
+    gap: 20px;
+    padding: 30px;
+
+    .left-container {
+        width: 70%;
+        border: red solid 1px;
+
+        padding: 15px;
+
+        .quiz-body {}
+
+        .quiz-content {
+            .q-child-container {
+                .q-img-container {
+                    width: 100%;
+                    height: 200px;
+
+                    img {
+                        max-width: 100%;
+                        max-height: 100%;
+                    }
+                }
+
+                .question {
+                    font-size: 20px;
+                    font-weight: 600;
+                    padding: 20px 0;
+                    text-align: center;
+                }
+
+                .answer-container {
+                    text-align: left;
+                    padding-left: 50px;
+
+                    .child-answer {
+                        input[type="radio"] {
+                            width: 30px;
+                            height: 30px;
+                            border-radius: 15px;
+                            border: 2px solid black;
+                            background-color: white;
+                            -webkit-appearance: none;
+                            /*to disable the default appearance of radio button*/
+                            -moz-appearance: none;
+                            cursor: pointer;
+
+                            &:hover {
+                                background-color: black;
+                                transition: 0.2s ease;
+                            }
+                        }
+
+                        input[type="radio"]:focus {
+                            /*no need, if you don't disable default appearance*/
+                            outline: none;
+                            /*to remove the square border on focus*/
+                        }
+
+                        input[type="radio"]:checked {
+                            /*no need, if you don't disable default appearance*/
+                            background-color: black;
+                        }
+
+                        input[type="radio"]:checked~span:first-of-type {
+                            color: white;
+                        }
+
+                        label span:first-of-type {
+                            position: relative;
+                            left: -20px;
+                            font-size: 15px;
+                            color: black;
+                            font-weight: 600;
+                        }
+
+                        label span {
+                            position: relative;
+                            top: -10px;
+                        }
+
+                        label {
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .right-container {
+        width: 30%;
+        background-color: green;
+    }
+}

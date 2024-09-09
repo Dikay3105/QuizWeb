@@ -13,7 +13,7 @@ import Register from './components/Auth/Register/Register';
 import { PacmanLoader } from 'react-spinners';
 import { useSelector } from 'react-redux';
 import ListQuiz from './components/User/ListQuiz';
-import DetailQuiz from './components/User/DetailQuiz';
+import DetailQuiz from './components/User/DetailQuiz/DetailQuiz';
 
 // CSS override cho loader (nếu cần)
 const override = {
@@ -56,7 +56,7 @@ const App = () => {
 
       <ToastContainer
         position="top-center"
-        autoClose={3000}
+        autoClose={2000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

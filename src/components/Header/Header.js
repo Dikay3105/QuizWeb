@@ -3,15 +3,33 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavDropdown } from 'react-bootstrap';
+import { doLogOut } from '../../redux/action/userAction';
+import { postLogOut } from '../../service/authService';
 
 const Header = (props) => {
     const isAuthenticated = useSelector(state => state.userReducer.isAuthenticated);
     const account = useSelector(state => state.userReducer.account);
-
-    const [activeLink, setActiveLink] = useState("home");
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [activeLink, setActiveLink] = useState("home");
+
+    const handleLogout = async () => {
+        const isLoggedOut = await logOut();
+        if (isLoggedOut) {
+            dispatch(doLogOut());
+            navigate("/");
+        }
+    }
+
+    const logOut = async () => {
+        const response = await postLogOut(account.email, account.refresh_token);
+        if (response && response.EC === 0) {
+            return true;
+        }
+        return false;
+    }
 
     const clickLink = (link) => {
         setActiveLink(link);
@@ -23,11 +41,6 @@ const Header = (props) => {
 
     const handleRegister = () => {
         navigate("/register");
-    }
-
-    const handleLogout = () => {
-        // Thêm logic để logout ở đây, ví dụ dispatch một action hoặc xóa token
-        console.log("Logout");
     }
 
     return (
@@ -80,24 +93,18 @@ const Header = (props) => {
                             )}
 
                             {isAuthenticated && (
-                                // <div className="account-info">
-                                //     <span className="username">{account.username}</span>
-                                //     <button className='btn-logout' onClick={handleLogout}>Log out</button>
-                                // </div>
                                 <NavDropdown title={account.username} id="basic-nav-dropdown">
-                                    <NavDropdown.Item href="#action/3.2">Log out</NavDropdown.Item>
-                                    <NavDropdown.Item href="#action/3.3">Propfile</NavDropdown.Item>
+                                    <NavDropdown.Item onClick={handleLogout}>Log out</NavDropdown.Item>
+                                    <NavDropdown.Item href="#action/3.3">Profile</NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
                                 </NavDropdown>
                             )}
-
-
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-        </div >
+        </div>
     );
 }
 
