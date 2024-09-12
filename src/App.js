@@ -14,6 +14,7 @@ import { PacmanLoader } from 'react-spinners';
 import { useSelector } from 'react-redux';
 import ListQuiz from './components/User/ListQuiz';
 import DetailQuiz from './components/User/DetailQuiz/DetailQuiz';
+import ManageQuiz from './components/Admin/Content/ManageQuiz/ManageQuiz';
 
 // CSS override cho loader (nếu cần)
 const override = {
@@ -47,6 +48,7 @@ const App = () => {
           <Route path="admin" element={<Admin />}>
             <Route index element={<Dashboard />} />
             <Route path="manage-user" element={<ManageUser />} />
+            <Route path="manage-quiz" element={<ManageQuiz />} />
           </Route>
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />

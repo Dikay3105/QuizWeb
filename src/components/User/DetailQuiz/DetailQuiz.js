@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { getDataQuiz } from "../../../service/quizService";
+import { getDataQuiz, postSubmitQuiz } from "../../../service/quizService";
 import _ from "lodash";
 import "./DetailQuiz.scss";
 import Question from "./Question/Question";
+import ResultModal from "./ResultModal";
 
 const DetailQuiz = () => {
     const params = useParams();
     const quizId = params.id;
     const [dataQuiz, setDataQuiz] = useState([]);
     const [index, setIndex] = useState(0);
+    const [isShowModalResult, setIsShowModalResult] = useState(false);
+    const [dataModalResult, setDataModalResult] = useState({});
 
     useEffect(() => {
         fetchQuestions();
@@ -32,6 +35,7 @@ const DetailQuiz = () => {
                             questionDescription = item.description;
                             image = item.image;
                         }
+                        item.answers.isSelected = false;
                         answers.push(item.answers);
                     });
 
@@ -55,6 +59,83 @@ const DetailQuiz = () => {
         }
     };
 
+    const handleCheckBox = (answerId, questionId) => {
+        let cloneDataQuiz = _.cloneDeep(dataQuiz);
+        let question = cloneDataQuiz.find(item => +item.questionId === +questionId)
+        // let answer = question.find(item => +item.questionId === +questionId)
+        if (question && question.answers) {
+            let ans = question.answers.map(item => {
+                if (+item.id === +answerId) {
+                    item.isSelected = !item.isSelected
+                } else {
+                    item.isSelected = false
+                }
+                return item;
+            })
+            question.answers = ans
+        }
+
+        let index = cloneDataQuiz.findIndex(item => +item.questionId === +questionId)
+        if (index > -1) {
+            cloneDataQuiz[index] = question
+            setDataQuiz(cloneDataQuiz)
+        }
+
+    }
+
+    // {
+    //     "quizId": 1,
+    //         "answers": [
+    //             {
+    //                 "questionId": 1,
+    //                 "userAnswerId": [3]
+    //             },
+    //             {
+    //                 "questionId": 2,
+    //                 "userAnswerId": [6]
+    //             }
+    //         ]
+    // }
+
+    const handleFinish = async () => {
+        let payload = {
+            quizId: +quizId,
+        };
+        let answers = [];
+
+        if (dataQuiz && dataQuiz.length > 0) {
+            dataQuiz.forEach((item) => {
+                let questionId = +item.questionId;
+
+                // Lọc các câu trả lời đã được chọn
+                let userAnswerId = item.answers
+                    .filter((answer) => answer.isSelected === true) // Lọc chỉ những câu trả lời được chọn
+                    .map((answer) => answer.id); // Lấy ID của câu trả lời đã chọn
+
+                // Chỉ push nếu user đã chọn ít nhất 1 câu trả lời
+                answers.push({
+                    questionId: +questionId,
+                    userAnswerId
+                });
+            });
+
+            payload.answers = answers;
+        }
+
+        let response = await postSubmitQuiz(payload);
+        if (response && response.EC === 0) {
+            setIsShowModalResult(true);
+            setDataModalResult({
+                countCorrect: response.DT.countCorrect,
+                countTotal: response.DT.countTotal,
+                quizData: response.DT.quizData,
+            })
+        } else {
+            alert("Somethings went wrong...")
+        }
+        console.log(response)
+    };
+
     return (
         <div className="detail-quiz-container">
             <div className="left-container">
@@ -64,6 +145,7 @@ const DetailQuiz = () => {
                 <hr />
                 <div className="quiz-content">
                     <Question
+                        handleCheckBox={handleCheckBox}
                         index={index}
                         data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[index] : []}
                     />
@@ -86,7 +168,7 @@ const DetailQuiz = () => {
 
                     <button
                         className={`btn ${index === dataQuiz.length - 1 ? 'btn-danger' : 'd-none'}`}
-                        onClick={handleNext}
+                        onClick={() => handleFinish()}
                         style={{ width: '100px' }}
                     >
                         Finish
@@ -96,7 +178,12 @@ const DetailQuiz = () => {
             <div className="right-container">
                 count down
             </div>
-        </div>
+            <ResultModal
+                isShowModalResult={isShowModalResult}
+                setIsShowModalResult={setIsShowModalResult}
+                dataModalResult={dataModalResult}
+            ></ResultModal>
+        </div >
     );
 };
 

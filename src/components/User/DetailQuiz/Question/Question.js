@@ -2,11 +2,13 @@ import _ from "lodash";
 
 const Question = (props) => {
     const { data, index } = props;
-    let letterAnswer = 'A';
-    console.log(data)
 
     if (_.isEmpty(data)) {
         return (<></>)
+    }
+
+    const handleHandleCheckBox = (event, answerId, questionId) => {
+        props.handleCheckBox(answerId, questionId)
     }
 
     return (
@@ -22,8 +24,12 @@ const Question = (props) => {
                     && data.answers.map((a, index) => {
                         return (<div className="child-answer" key={`answer-${index}`}>
                             <label>
-                                <input type="radio" name="options" />
-                                <span>{String.fromCharCode(letterAnswer.charCodeAt(0) + index)}</span><span>{a.description}</span>
+                                <input
+                                    checked={a.isSelected}
+                                    type="radio"
+                                    name="options"
+                                    onChange={(event) => handleHandleCheckBox(event, a.id, data.questionId)} />
+                                <span>{String.fromCharCode("A".charCodeAt(0) + index)}</span><span>{a.description}</span>
                             </label>
                         </div>)
                     })

@@ -11,9 +11,10 @@ import {
 import { FaTachometerAlt, FaGem, FaList, FaGithub, FaRegLaughWink, FaHeart } from 'react-icons/fa';
 import sidebarBg from '../../assets/bg2.jpg';
 import 'react-pro-sidebar/dist/css/styles.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const AdminSidebar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
+    const navigate = useNavigate();
     return (
         <ProSidebar
             image={sidebarBg}
@@ -33,7 +34,10 @@ const AdminSidebar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
+                        cursor: 'pointer'
                     }}
+
+                    onClick={() => navigate("/")}
                 >
                     sidebarTitle
                 </div>
@@ -49,7 +53,7 @@ const AdminSidebar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
                     </MenuItem>
                     <SubMenu title="Features" icon={<FaGem />}>
                         <MenuItem>Quản lý Users <Link to="/admin/manage-user" /></MenuItem>
-                        <MenuItem>Quản lý bài Quiz <Link to="/admin/quiz" /></MenuItem>
+                        <MenuItem>Quản lý bài Quiz <Link to="/admin/manage-quiz" /></MenuItem>
                         <MenuItem>Quản lý câu hỏi <Link to="/admin/question" /></MenuItem>
                     </SubMenu>
                 </Menu>

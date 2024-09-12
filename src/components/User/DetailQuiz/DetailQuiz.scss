@@ -45,11 +45,6 @@
                             /*to disable the default appearance of radio button*/
                             -moz-appearance: none;
                             cursor: pointer;
-
-                            &:hover {
-                                background-color: black;
-                                transition: 0.2s ease;
-                            }
                         }
 
                         input[type="radio"]:focus {
@@ -60,7 +55,8 @@
 
                         input[type="radio"]:checked {
                             /*no need, if you don't disable default appearance*/
-                            background-color: black;
+                            background-color: rgb(255, 68, 68);
+                            border: rgb(255, 68, 68);
                         }
 
                         input[type="radio"]:checked~span:first-of-type {
