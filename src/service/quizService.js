@@ -13,17 +13,18 @@ const postCreateNewQuiz = (name, description, difficulty, image) => {
     return axios.post('api/v1/quiz', form);
 }
 
-const putUpdateUser = (id, username, role, image) => {
+const putUpdateQuiz = (id, name, description, difficulty, image) => {
     const form = new FormData();
     form.append('id', id);
-    form.append('username', username);
-    form.append('role', role);
-    form.append('userImage', image);
-    return axios.put('api/v1/participant', { form, delay: 2000 });
+    form.append('description', description);
+    form.append('name', name);
+    form.append('difficulty', difficulty);
+    form.append('quizImage', image);
+    return axios.put('api/v1/quiz', form);
 }
 
-const delUser = (id) => {
-    return axios.delete('api/v1/participant', { data: { id: id } });
+const delQuiz = (id) => {
+    return axios.delete(`api/v1/quiz/${id}`);
 }
 
 const getQuizByUser = () => {
@@ -43,5 +44,7 @@ export {
     getDataQuiz,
     postSubmitQuiz,
     postCreateNewQuiz,
-    getAllQuiz
+    getAllQuiz,
+    delQuiz,
+    putUpdateQuiz
 };

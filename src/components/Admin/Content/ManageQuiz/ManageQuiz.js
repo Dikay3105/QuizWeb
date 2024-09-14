@@ -4,6 +4,8 @@ import "./ManageQuiz.scss";
 import { getAllQuiz, postCreateNewQuiz } from '../../../../service/quizService';
 import { toast } from 'react-toastify';
 import TableQuiz from './TableQuiz';
+import UpdateQuizModal from './UpdateQuizModal';
+import DeleteQuizModal from './DeleteQuizModal';
 import { Accordion } from 'react-bootstrap';
 
 const ManageQuiz = () => {
@@ -19,6 +21,9 @@ const ManageQuiz = () => {
     const [difficulty, setDifficulty] = useState("");
     const [image, setImage] = useState("");
     const [listQuizzes, setListQuizzes] = useState([]);
+    const [showDelete, setShowDelete] = useState(false);
+    const [showModalUpdate, setShowModalUpdate] = useState(false);
+    const [dataUpdate, setDataUpdate] = useState([]);
 
     const fetchQuizzes = async () => {
         let response = await getAllQuiz();
@@ -27,9 +32,23 @@ const ManageQuiz = () => {
         }
     };
 
+    const handleClickBtnUpdate = (quiz) => {
+        setShowModalUpdate(true);
+        setDataUpdate(quiz);
+    };
+
+    const handleClickBtnDelete = (quiz) => {
+        setShowDelete(true);
+        setDataUpdate(quiz);
+    };
+
     useEffect(() => {
         fetchQuizzes()
     }, []);
+
+    const resetDataUpdate = () => {
+        setDataUpdate([]);
+    }
 
     const handleUploadImage = (event) => {
         const file = event.target.files[0];
@@ -66,7 +85,6 @@ const ManageQuiz = () => {
         }
 
         let response = await postCreateNewQuiz(name, description, difficulty, image);
-        console.log(image)
         if (response && response.EC === 0) {
             toast.success("Added new quiz successfully");
             setName("");
@@ -143,24 +161,28 @@ const ManageQuiz = () => {
                         </div>
                     </Accordion.Body>
                 </Accordion.Item>
-                {/* <Accordion.Item eventKey="1">
-                    <Accordion.Header>Accordion Item #2</Accordion.Header>
-                    <Accordion.Body>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                        minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                        aliquip ex ea commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                        culpa qui officia deserunt mollit anim id est laborum.
-                    </Accordion.Body>
-                </Accordion.Item> */}
             </Accordion>
 
             <div className='listQuiz mt-3 px-3'>
                 <div className="mb-3 fs-4">List Quizzes</div>
                 <TableQuiz
                     listQuizzes={listQuizzes}
+                    handleClickBtnDelete={handleClickBtnDelete}
+                    handleClickBtnUpdate={handleClickBtnUpdate}
+                />
+                <UpdateQuizModal
+                    dataUpdate={dataUpdate}
+                    showModalUpdate={showModalUpdate}
+                    setShowModalUpdate={setShowModalUpdate}
+                    fetchQuizzes={fetchQuizzes}
+                    resetDataUpdate={resetDataUpdate}
+                />
+                <DeleteQuizModal
+                    dataUpdate={dataUpdate}
+                    fetchQuizzes={fetchQuizzes}
+                    showDelete={showDelete}
+                    setShowDelete={setShowDelete}
+                    resetDataUpdate={resetDataUpdate}
                 />
             </div>
 

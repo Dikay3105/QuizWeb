@@ -1,8 +1,8 @@
-const TableQuiz = ({ listQuizzes }) => {
+const TableQuiz = ({ listQuizzes, handleClickBtnUpdate, handleClickBtnDelete }) => {
     console.log(listQuizzes)
     return (
         <>
-            <table className="table table-hover table-bordered">
+            <table className="table table-hover table-bordered my-2">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -21,8 +21,8 @@ const TableQuiz = ({ listQuizzes }) => {
                                 <td>{quiz.description}</td>
                                 <td>{quiz.difficulty}</td>
                                 <td>
-                                    <button className="btn btn-primary">Edit</button>
-                                    <button className="btn btn-danger mx-2">Delete</button>
+                                    <button className="btn btn-primary" onClick={() => { handleClickBtnUpdate(quiz) }}>Edit</button>
+                                    <button className="btn btn-danger mx-2" onClick={() => { handleClickBtnDelete(quiz) }}>Delete</button>
                                 </td>
                             </tr>
                         ))
