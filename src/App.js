@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 import ListQuiz from './components/User/ListQuiz';
 import DetailQuiz from './components/User/DetailQuiz/DetailQuiz';
 import ManageQuiz from './components/Admin/Content/ManageQuiz/ManageQuiz';
+import ManageQuestion from './components/Admin/Content/ManageQuestion/ManageQuestion';
 
 
 // CSS override cho loader (nếu cần)
@@ -50,6 +51,7 @@ const App = () => {
             <Route index element={<Dashboard />} />
             <Route path="manage-user" element={<ManageUser />} />
             <Route path="manage-quiz" element={<ManageQuiz />} />
+            <Route path="manage-question" element={<ManageQuestion />} />
           </Route>
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />

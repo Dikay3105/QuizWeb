@@ -54,7 +54,7 @@ const AdminSidebar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
                     <SubMenu title="Features" icon={<FaGem />}>
                         <MenuItem>Quản lý Users <Link to="/admin/manage-user" /></MenuItem>
                         <MenuItem>Quản lý bài Quiz <Link to="/admin/manage-quiz" /></MenuItem>
-                        <MenuItem>Quản lý câu hỏi <Link to="/admin/question" /></MenuItem>
+                        <MenuItem>Quản lý câu hỏi <Link to="/admin/manage-question" /></MenuItem>
                     </SubMenu>
                 </Menu>
                 <Menu iconShape="circle">
