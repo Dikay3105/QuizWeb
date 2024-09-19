@@ -15,6 +15,15 @@ const Question = React.memo(({
     fileInputRef
 }) => {
 
+    const getImageSrc = (image) => {
+        // Nếu URL chứa 'blob' thì giữ nguyên (ảnh upload mới)
+        if (image.startsWith('blob:')) {
+            return image;
+        }
+        // Nếu là chuỗi base64 thì thêm tiền tố phù hợp
+        return `data:image/jpeg;base64,${image}`;
+    };
+
     return (
         <div className="mb-4">
             <div className="d-flex justify-content-between align-items-center mb-3">
@@ -48,7 +57,7 @@ const Question = React.memo(({
                     <div className="position-relative mt-2">
                         <div className="question-img-preview img-thumbnail">
                             <img
-                                src={question.image}
+                                src={getImageSrc(question.image)}
                                 alt={`Question ${qIndex + 1}`}
                             />
                         </div>

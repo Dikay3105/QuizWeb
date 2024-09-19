@@ -44,7 +44,7 @@ const ManageQuestion = () => {
 
             setDataQuiz(data);
         }
-        console.log(dataQuiz)
+        console.log(transformData(dataQuiz))
     };
     useEffect(() => {
         const fetchQuizzes = async () => {
@@ -58,7 +58,6 @@ const ManageQuestion = () => {
                     setOptions(quizOptions);
                 }
             } catch (error) {
-                console.error("Failed to fetch quiz data", error);
                 toast.error("Failed to fetch quizzes.");
             }
         };
@@ -71,6 +70,34 @@ const ManageQuestion = () => {
             fetchQuestions(selectedQuiz);
         }
     }, [selectedQuiz]);
+
+    useEffect(() => {
+        if (dataQuiz.length > 0) {
+            setQuestions(transformData(dataQuiz));
+        }
+    }, [dataQuiz]);
+
+    // "questionId": "7",
+    //     "answers": [
+    //         { "id": 19, "description": "Là cô nào đấy...", "isSelected": false },
+    //         { "id": 20, "description": "Là em nào đấy...", "isSelected": false },
+    //         { "id": 21, "description": "Đếu care...", "isSelected": false }
+    //     ],
+    //         "questionDescription": "Đây là ai hard",
+    //             "image": null
+
+    const transformData = (data) => {
+        return data.map(question => ({
+            id: +question.questionId,
+            description: question.questionDescription,
+            image: question.image,
+            answers: question.answers.map(answer => ({
+                id: +answer.id,
+                description: answer.description,
+                isCorrect: answer.isSelected // Using isSelected as correct flag
+            }))
+        }));
+    };
 
     const handleQuestionTextChange = useCallback((index, value) => {
         setQuestions(prevQuestions => {
@@ -113,7 +140,7 @@ const ManageQuestion = () => {
             const newQuestions = [...prevQuestions];
             newQuestions[qIndex].answers = newQuestions[qIndex].answers.map((answer, i) => ({
                 ...answer,
-                correct: i === aIndex,
+                isCorrect: i === aIndex,
             }));
             return newQuestions;
         });
@@ -123,7 +150,7 @@ const ManageQuestion = () => {
         setQuestions(prevQuestions => {
             const newQuestions = [...prevQuestions];
             if (newQuestions[qIndex].answers.length >= 4) return newQuestions;
-            newQuestions[qIndex].answers.push({ id: uuidv4(), description: "", correct: false });
+            newQuestions[qIndex].answers.push({ id: uuidv4(), description: "", isCorrect: false });
             return newQuestions;
         });
     }, []);
@@ -139,7 +166,7 @@ const ManageQuestion = () => {
     const handleAddQuestion = () => {
         setQuestions(prevQuestions => [
             ...prevQuestions,
-            { description: "", image: null, answers: [{ id: uuidv4(), description: "", correct: false }] },
+            { description: "", image: null, answers: [{ id: uuidv4(), description: "", isCorrect: false }] },
         ]);
     };
 
@@ -164,7 +191,7 @@ const ManageQuestion = () => {
                 toast.error("Each question must have at least two answers.");
                 return;
             }
-            if (!question.answers.some((answer) => answer.correct)) {
+            if (!question.answers.some((answer) => answer.isCorrect)) {
                 toast.error("Each question must have one correct answer.");
                 return;
             }
@@ -209,20 +236,24 @@ const ManageQuestion = () => {
                         />
                     ))
                 )}
-                <div className="mb-5">
-                    <button
-                        type="button"
-                        className="btn btn-warning"
-                        style={{ marginRight: "2rem" }}
-                        onClick={handleAddQuestion}
-                    >
-                        <FaPlus fontSize={20} /> Add Question
-                    </button>
+                {selectedQuiz ?
+                    (<div className="mb-5">
+                        <button
+                            type="button"
+                            className="btn btn-warning"
+                            style={{ marginRight: "2rem" }}
+                            onClick={handleAddQuestion}
+                        >
+                            <FaPlus fontSize={20} /> Add Question
+                        </button>
 
-                    <button type="submit" className="btn btn-primary">
-                        <TiTick fontSize={25} /> Submit Questions
-                    </button>
-                </div>
+                        <button type="submit" className="btn btn-primary">
+                            <TiTick fontSize={25} /> Submit Questions
+                        </button>
+                    </div>)
+                    : ""
+                }
+
             </form>
         </div>
     );
